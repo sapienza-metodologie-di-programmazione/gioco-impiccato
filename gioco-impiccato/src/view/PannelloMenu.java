@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -19,7 +20,7 @@ public class PannelloMenu extends Pannello {
 	private JButton bottoneGioco;
 	private JButton bottoneStatistiche;
 
-	public static final String NOME_GIOCO = "Gioco dell'impiccato";
+	public static final String NOME_GIOCO = "<html>Gioco<br>dell'impiccato</html>";
 	public static final String PATH_IMMAGINE = "assets/forest.png";
 	public static final String INDICAZIONE_GIOCO = "Gioca";
 	public static final String INDICAZIONE_STATISTICHE = "Statistiche";
@@ -29,6 +30,7 @@ public class PannelloMenu extends Pannello {
 
 		super(GRIGLIA);
 		titolo = new JLabel(NOME_GIOCO);
+		titolo.setFont(new Font("Elephant", Font.PLAIN, 60));
 		immagine = new JLabel(new ImageIcon(PATH_IMMAGINE));
 		bottoneGioco = new JButton(INDICAZIONE_GIOCO);
 		bottoneStatistiche = new JButton(INDICAZIONE_STATISTICHE);

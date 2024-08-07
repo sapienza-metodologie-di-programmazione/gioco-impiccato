@@ -1,11 +1,8 @@
 package view;
 
 import java.awt.Font;
-import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -15,11 +12,10 @@ import javax.swing.UIManager;
 public class FinestraGiocoImpiccato extends JFrame {
 
 	static {
-		UIManager.put("Label.font", getFont("Nunito-Regular.ttf"));
-		UIManager.put("Button.font", new Font(Font.DIALOG, Font.PLAIN, 21));
-	}
+		UIManager.put("Label.font", new Font("Arial", Font.PLAIN, 40));
+		UIManager.put("Button.font", new Font("Segoe Script", Font.PLAIN, 30));
 
-	private static Map<String, Font> fonts = new HashMap<>();
+	}
 
 	public static final String TITOLO = "Gioco dell'impiccato";
 	public static final String PATH_ICONA = "assets/hangman-game-icon.png";
@@ -44,31 +40,6 @@ public class FinestraGiocoImpiccato extends JFrame {
 		// setSize(DIMENSIONI[0], DIMENSIONI[1]);
 		setLocationRelativeTo(null);
 		setVisible(true);
-	}
-
-	public static Font getFont(String name) {
-		Font font = null;
-		if (name == null) {
-			return new Font(Font.SERIF, Font.PLAIN, 14);
-		}
-
-		try {
-			// load from a cache map, if exists
-			if (fonts != null && (font = fonts.get(name)) != null) {
-				return font;
-			}
-			String fName = "assets/font/" + name;
-			File fontFile = new File(fName);
-			font = Font.createFont(Font.TRUETYPE_FONT, fontFile);
-			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-
-			ge.registerFont(font);
-
-			fonts.put(name, font);
-		} catch (Exception ex) {
-			System.out.println("Not loaded");
-		}
-		return font;
 	}
 
 	public static void main(String[] args) {
