@@ -2,16 +2,19 @@ package view;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import view.Grafica.TipoSfondo;
+import view.Grafica.TipoTesto;
 
 public class PannelloMenu extends Pannello {
 
@@ -20,20 +23,29 @@ public class PannelloMenu extends Pannello {
 	private JButton bottoneGioco;
 	private JButton bottoneStatistiche;
 
-	public static final String NOME_GIOCO = "<html>Gioco<br>dell'impiccato</html>";
-	public static final String PATH_IMMAGINE = "assets/forest.png";
-	public static final String INDICAZIONE_GIOCO = "Gioca";
-	public static final String INDICAZIONE_STATISTICHE = "Statistiche";
-	public static final GridLayout GRIGLIA = new GridLayout(1, 2, 30, 0);
+	private static String nomeGioco = "<html>Gioco<br>dell'impiccato</html>";
+	private static String pathImmagine = "assets/forest.png";
+	private static String indicazioneGioco = "Gioca";
+	private static String indicazioneStatistiche = "Statistiche";
+	private static GridLayout layoutDefault = new GridLayout(1, 2, 30, 0);
+
+	public static final Grafica GRAFICA_DEFAULT = new Grafica(
+			Map.of(TipoSfondo.PANNELLO, Color.decode("#b2f2bb"), TipoSfondo.BOTTONE, Color.decode("#ffec99"),
+					TipoTesto.TITOLO, Color.decode("#f08c00")),
+			Map.of(TipoTesto.TITOLO, new Font("Stencil", Font.PLAIN, 60), TipoTesto.BOTTONE,
+					new Font("Segoe Script", Font.PLAIN, 30), TipoTesto.NORMALE, new Font("Arial", Font.PLAIN, 40)));
 
 	public PannelloMenu() {
+		this(GRAFICA_DEFAULT);
+	}
 
-		super(GRIGLIA);
-		titolo = new JLabel(NOME_GIOCO);
-		titolo.setFont(new Font("Elephant", Font.PLAIN, 60));
-		immagine = new JLabel(new ImageIcon(PATH_IMMAGINE));
-		bottoneGioco = new JButton(INDICAZIONE_GIOCO);
-		bottoneStatistiche = new JButton(INDICAZIONE_STATISTICHE);
+	public PannelloMenu(Grafica grafica) {
+
+		super(layoutDefault, grafica);
+		titolo = grafica.creaTitolo(nomeGioco);
+		immagine = new JLabel(new ImageIcon(pathImmagine));
+		bottoneGioco = grafica.creaBottone(indicazioneGioco);
+		bottoneStatistiche = grafica.creaBottone(indicazioneStatistiche);
 
 		inizializzaPannelloMenu();
 	}
@@ -71,36 +83,5 @@ public class PannelloMenu extends Pannello {
 		c.weighty = wy;
 		return c;
 	}
-
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		int density = 5;
-		g.setColor(Color.decode("#b2f2bb"));
-		for (int x = 0; x <= getWidth() + getHeight(); x += density) {
-			g.drawLine(x, 0, 0, x);
-		}
-	}
-
-//		GridBagConstraints disposizioni = new GridBagConstraints();
-//		GridBagConstraints disposizioni2 = new GridBagConstraints();
-//		disposizioni.weightx = 0;
-//		disposizioni.weighty = 0;
-//		disposizioni.anchor = GridBagConstraints.EAST;
-//		disposizioni.gridx = 0;
-//		disposizioni.gridy = 0;
-//		disposizioni.gridwidth = 1;
-//		disposizioni.gridheight = 3;
-//
-//		disposizioni2.weightx = 1;
-//		disposizioni2.weighty = 0;
-//		disposizioni2.anchor = GridBagConstraints.SOUTHEAST;
-//		disposizioni2.gridx = 0;
-//		disposizioni2.gridy = 0;
-//		disposizioni2.gridwidth = 3;
-//		disposizioni2.gridheight = 2;
-//		setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-//		add(new JLabel(new ImageIcon("assets/forest.png")), disposizioni);
-//		add(new JLabel("Gioco"), disposizioni2);
 
 }

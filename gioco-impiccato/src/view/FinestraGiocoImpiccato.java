@@ -1,21 +1,13 @@
 package view;
 
-import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
 
 public class FinestraGiocoImpiccato extends JFrame {
-
-	static {
-		UIManager.put("Label.font", new Font("Arial", Font.PLAIN, 40));
-		UIManager.put("Button.font", new Font("Segoe Script", Font.PLAIN, 30));
-
-	}
 
 	public static final String TITOLO = "Gioco dell'impiccato";
 	public static final String PATH_ICONA = "assets/hangman-game-icon.png";
@@ -35,7 +27,8 @@ public class FinestraGiocoImpiccato extends JFrame {
 		} catch (IOException e) {
 		}
 
-		add(new PannelloMenu());
+		PannelloMenu menu = new PannelloMenu();
+		add(menu);
 		pack();
 		// setSize(DIMENSIONI[0], DIMENSIONI[1]);
 		setLocationRelativeTo(null);
