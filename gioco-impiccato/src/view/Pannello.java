@@ -1,10 +1,15 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
+import java.util.Map;
 
 import javax.swing.JPanel;
+
+import view.GraficaPannello.TipoSfondo;
+import view.GraficaPannello.TipoTesto;
 
 public class Pannello extends JPanel {
 
@@ -13,8 +18,15 @@ public class Pannello extends JPanel {
 		MENU, STATISTICHE, GIOCO, ESITO_PARTITA
 	}
 
-	private Grafica grafica = new Grafica();
+	private GraficaPannello grafica = new GraficaPannello();
 	private static Color coloreSfondoDefault = Color.WHITE;
+
+	public static final GraficaPannello GRAFICA_DEFAULT = new GraficaPannello(
+			Map.of(TipoSfondo.PANNELLO, GraficaPannello.VERDE, TipoSfondo.BOTTONE, GraficaPannello.GIALLO,
+					TipoTesto.TITOLO, GraficaPannello.ARANCIONE),
+			Map.of(TipoTesto.TITOLO, new Font("Stencil", Font.PLAIN, 65), TipoTesto.BOTTONE,
+					new Font("Segoe Script", Font.PLAIN, 30), TipoTesto.NORMALE,
+					new Font("Calibri Light", Font.PLAIN, 40)));
 
 	public Pannello() {
 	}
@@ -23,16 +35,16 @@ public class Pannello extends JPanel {
 		super(layout);
 	}
 
-	public Pannello(Grafica grafica) {
+	public Pannello(GraficaPannello grafica) {
 		this.grafica = grafica;
 	}
 
-	public Pannello(LayoutManager layout, Grafica grafica) {
+	public Pannello(LayoutManager layout, GraficaPannello grafica) {
 		super(layout);
 		this.grafica = grafica;
 	}
 
-	public Grafica getGrafica() {
+	public GraficaPannello getGrafica() {
 		return grafica;
 	}
 
@@ -40,7 +52,7 @@ public class Pannello extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		int density = 5;
-		g.setColor(grafica.getColori().getOrDefault(Grafica.TipoSfondo.PANNELLO, coloreSfondoDefault));
+		g.setColor(grafica.getColori().getOrDefault(GraficaPannello.TipoSfondo.PANNELLO, coloreSfondoDefault));
 		for (int x = 0; x <= getWidth() + getHeight(); x += density) {
 			g.drawLine(x, 0, 0, x);
 		}

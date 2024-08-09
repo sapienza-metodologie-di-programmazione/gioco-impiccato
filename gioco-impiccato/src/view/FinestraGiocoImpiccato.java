@@ -6,12 +6,20 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 
 public class FinestraGiocoImpiccato extends JFrame {
 
-	public static final String TITOLO = "Gioco dell'impiccato";
-	public static final String PATH_ICONA = "assets/hangman-game-icon.png";
-	public static final int[] DIMENSIONI = new int[] { 1200, 800 };
+	static {
+		UIManager.put("Button.highlight", GraficaPannello.ARANCIONE);
+		UIManager.put("Button.select", GraficaPannello.ARANCIONE);
+		UIManager.put("Button.focus", GraficaPannello.TRASPARENTE);
+		UIManager.put("Panel.background", GraficaPannello.TRASPARENTE);
+	}
+
+	private static String titolo = "Gioco dell'impiccato";
+	private static String path_icona = "assets/hangman-game-icon.png";
+	private static int[] dimensioni = new int[] { 1200, 800 };
 
 	private JPanel pannelloGenerale;
 	private PannelloMenu pannelloMenu;
@@ -20,15 +28,15 @@ public class FinestraGiocoImpiccato extends JFrame {
 
 	public FinestraGiocoImpiccato() {
 
-		super(TITOLO);
+		super(titolo);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		try {
-			setIconImage(ImageIO.read(new File(PATH_ICONA)));
+			setIconImage(ImageIO.read(new File(path_icona)));
 		} catch (IOException e) {
 		}
 
-		PannelloMenu menu = new PannelloMenu();
-		add(menu);
+		add(new PannelloMenu());
+		// add(new PannelloStatistiche());
 		pack();
 		// setSize(DIMENSIONI[0], DIMENSIONI[1]);
 		setLocationRelativeTo(null);

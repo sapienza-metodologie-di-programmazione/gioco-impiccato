@@ -8,7 +8,12 @@ import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
-public class Grafica {
+public class GraficaPannello {
+
+	public static final Color TRASPARENTE = new Color(0, 0, 0, 0);
+	public static final Color ARANCIONE = Color.decode("#f08c00");
+	public static final Color GIALLO = Color.decode("#ffec99");
+	public static final Color VERDE = Color.decode("#b2f2bb");
 
 	public enum TipoTesto implements Colorabile {
 		TITOLO, NORMALE, BOTTONE
@@ -21,10 +26,10 @@ public class Grafica {
 	private Map<Colorabile, Color> colori = new HashMap<>();
 	private Map<TipoTesto, Font> fonts = new HashMap<>();
 
-	public Grafica() {
+	public GraficaPannello() {
 	}
 
-	public Grafica(Map<Colorabile, Color> colori, Map<TipoTesto, Font> fonts) {
+	public GraficaPannello(Map<Colorabile, Color> colori, Map<TipoTesto, Font> fonts) {
 		this.colori = colori;
 		this.fonts = fonts;
 	}
@@ -70,6 +75,7 @@ public class Grafica {
 			b.setBackground(colori.get(TipoSfondo.BOTTONE));
 		if (fonts.containsKey(TipoTesto.BOTTONE))
 			b.setFont(fonts.get(TipoTesto.BOTTONE));
+
 		return b;
 	}
 
