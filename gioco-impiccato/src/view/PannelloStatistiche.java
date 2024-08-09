@@ -19,7 +19,7 @@ public class PannelloStatistiche extends Pannello {
 	private static String indicazionePartiteGiocate = "Partite giocate: ";
 	private static String indicazionePartiteVinte = "Parole indovinate: ";
 	private static String indicazioneUltimaParolaIndovinata = "Ultima parola indovinata: ";
-	private static LayoutManager layoutDefault = new BorderLayout(50, 50);
+	private static LayoutManager layout = new BorderLayout(50, 50);
 
 	public PannelloStatistiche() {
 		this(GRAFICA_DEFAULT);
@@ -28,7 +28,7 @@ public class PannelloStatistiche extends Pannello {
 
 	public PannelloStatistiche(GraficaPannello grafica) {
 
-		super(layoutDefault, grafica);
+		super(layout, grafica);
 		titolo = grafica.creaTitolo(nomeSchermata);
 		statistiche = grafica.creaTestoNormale(generaStatistiche(0, 0, ""));
 		bottoneMenu = grafica.creaBottone(indicazioneMenu);

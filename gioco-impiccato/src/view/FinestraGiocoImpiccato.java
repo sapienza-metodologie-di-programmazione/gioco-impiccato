@@ -11,9 +11,6 @@ import javax.swing.UIManager;
 public class FinestraGiocoImpiccato extends JFrame {
 
 	static {
-		UIManager.put("Button.highlight", GraficaPannello.ARANCIONE);
-		UIManager.put("Button.select", GraficaPannello.ARANCIONE);
-		UIManager.put("Button.focus", GraficaPannello.TRASPARENTE);
 		UIManager.put("Panel.background", GraficaPannello.TRASPARENTE);
 	}
 
@@ -35,8 +32,9 @@ public class FinestraGiocoImpiccato extends JFrame {
 		} catch (IOException e) {
 		}
 
-		add(new PannelloMenu());
+		add(new PannelloGioco("ciaoasdrubale"));
 		// add(new PannelloStatistiche());
+		// add(new PannelloMenu());
 		pack();
 		// setSize(DIMENSIONI[0], DIMENSIONI[1]);
 		setLocationRelativeTo(null);

@@ -7,11 +7,18 @@ import java.awt.LayoutManager;
 import java.util.Map;
 
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 
 import view.GraficaPannello.TipoSfondo;
 import view.GraficaPannello.TipoTesto;
 
 public class Pannello extends JPanel {
+
+	static {
+		UIManager.put("Button.highlight", GraficaPannello.ARANCIONE);
+		UIManager.put("Button.select", GraficaPannello.ARANCIONE);
+		UIManager.put("Button.focus", GraficaPannello.TRASPARENTE);
+	}
 
 	// usare factory pannelli?
 	public enum TipoPannello {
@@ -24,9 +31,8 @@ public class Pannello extends JPanel {
 	public static final GraficaPannello GRAFICA_DEFAULT = new GraficaPannello(
 			Map.of(TipoSfondo.PANNELLO, GraficaPannello.VERDE, TipoSfondo.BOTTONE, GraficaPannello.GIALLO,
 					TipoTesto.TITOLO, GraficaPannello.ARANCIONE),
-			Map.of(TipoTesto.TITOLO, new Font("Stencil", Font.PLAIN, 65), TipoTesto.BOTTONE,
-					new Font("Segoe Script", Font.PLAIN, 30), TipoTesto.NORMALE,
-					new Font("Calibri Light", Font.PLAIN, 40)));
+			Map.of(TipoTesto.TITOLO, new Font("Stencil", Font.PLAIN, 65), TipoTesto.BOTTONE, GraficaPannello.CORSIVO,
+					TipoTesto.NORMALE, new Font("Calibri Light", Font.PLAIN, 40)));
 
 	public Pannello() {
 	}

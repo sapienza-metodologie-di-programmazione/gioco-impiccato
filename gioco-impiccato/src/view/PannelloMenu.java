@@ -7,7 +7,6 @@ import java.awt.GridLayout;
 import java.awt.LayoutManager;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,7 +22,7 @@ public class PannelloMenu extends Pannello {
 	private static String pathImmagine = "assets/forest.png";
 	private static String indicazioneGioco = "Gioca";
 	private static String indicazioneStatistiche = "Statistiche";
-	private static LayoutManager layoutDefault = new GridLayout(1, 2, 40, 0);
+	private static LayoutManager layout = new GridLayout(1, 2, 40, 0);
 
 	public PannelloMenu() {
 		this(GRAFICA_DEFAULT);
@@ -31,9 +30,9 @@ public class PannelloMenu extends Pannello {
 
 	public PannelloMenu(GraficaPannello grafica) {
 
-		super(layoutDefault, grafica);
+		super(layout, grafica);
 		titolo = grafica.creaTitolo(nomeGioco);
-		immagine = new JLabel(new ImageIcon(pathImmagine));
+		immagine = grafica.creaImmagine(pathImmagine);
 		bottoneGioco = grafica.creaBottone(indicazioneGioco);
 		bottoneStatistiche = grafica.creaBottone(indicazioneStatistiche);
 

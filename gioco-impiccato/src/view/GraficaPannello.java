@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
@@ -14,6 +15,10 @@ public class GraficaPannello {
 	public static final Color ARANCIONE = Color.decode("#f08c00");
 	public static final Color GIALLO = Color.decode("#ffec99");
 	public static final Color VERDE = Color.decode("#b2f2bb");
+	public static final Color AZZURRO = Color.decode("#a5d8ff");
+	public static final Color BLU = Color.decode("#1971c2");
+
+	public static final Font CORSIVO = new Font("Segoe Script", Font.PLAIN, 30);
 
 	public enum TipoTesto implements Colorabile {
 		TITOLO, NORMALE, BOTTONE
@@ -69,14 +74,25 @@ public class GraficaPannello {
 
 	public JButton creaBottone(String testo) {
 		JButton b = new JButton(testo);
+		if (colori.containsKey(TipoSfondo.BOTTONE))
+			return creaBottone(testo, colori.get(TipoSfondo.BOTTONE));
+		return creaBottone(testo, TRASPARENTE);
+	}
+
+	public JButton creaBottone(String testo, Color coloreSfondo) {
+		JButton b = new JButton(testo);
 		if (colori.containsKey(TipoTesto.BOTTONE))
 			b.setForeground(colori.get(TipoTesto.BOTTONE));
-		if (colori.containsKey(TipoSfondo.BOTTONE))
-			b.setBackground(colori.get(TipoSfondo.BOTTONE));
 		if (fonts.containsKey(TipoTesto.BOTTONE))
 			b.setFont(fonts.get(TipoTesto.BOTTONE));
 
+		b.setBackground(coloreSfondo);
+
 		return b;
+	}
+
+	public JLabel creaImmagine(String path) {
+		return new JLabel(new ImageIcon(path));
 	}
 
 }
