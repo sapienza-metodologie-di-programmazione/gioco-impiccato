@@ -8,6 +8,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import model.GiocoImpiccato;
+
 public class PannelloStatistiche extends Pannello {
 
 	private JLabel titolo;
@@ -21,14 +23,14 @@ public class PannelloStatistiche extends Pannello {
 	private static String indicazioneUltimaParolaIndovinata = "Ultima parola indovinata: ";
 	private static LayoutManager layout = new BorderLayout(50, 50);
 
-	public PannelloStatistiche() {
-		this(GRAFICA_DEFAULT);
+	public PannelloStatistiche(GiocoImpiccato modello) {
+		this(modello, GRAFICA_DEFAULT);
 
 	}
 
-	public PannelloStatistiche(GraficaPannello grafica) {
+	public PannelloStatistiche(GiocoImpiccato modello, GraficaPannello grafica) {
 
-		super(layout, grafica);
+		super(modello, layout, grafica);
 		titolo = grafica.creaTitolo(nomeSchermata);
 		statistiche = grafica.creaTestoNormale(generaStatistiche(0, 0, ""));
 		bottoneMenu = grafica.creaBottone(indicazioneMenu);

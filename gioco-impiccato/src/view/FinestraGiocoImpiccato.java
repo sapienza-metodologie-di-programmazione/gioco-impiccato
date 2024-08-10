@@ -8,6 +8,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
+import model.GiocoImpiccato;
+
 public class FinestraGiocoImpiccato extends JFrame {
 
 	static {
@@ -32,7 +34,7 @@ public class FinestraGiocoImpiccato extends JFrame {
 		} catch (IOException e) {
 		}
 
-		add(new PannelloGioco("ciaoasdrubale"));
+		add(new PannelloGioco(new GiocoImpiccato(), "ciao"));
 		// add(new PannelloStatistiche());
 		// add(new PannelloMenu());
 		pack();

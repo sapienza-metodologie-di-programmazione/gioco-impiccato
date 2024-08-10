@@ -10,22 +10,19 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
 
+import model.GiocoImpiccato;
 import view.GraficaPannello.TipoSfondo;
 import view.GraficaPannello.TipoTesto;
 
 public class PannelloGioco extends Pannello {
 
-	static {
-		UIManager.put("Button.highlight", GraficaPannello.BLU);
-		UIManager.put("Button.select", GraficaPannello.BLU);
-	}
-
 	private JLabel immagineVite;
 	private JButton bottoneMenu;
 	private JLabel parola;
 	private Map<Character, JButton> bottoniLettere;
+	private JPanel pannelloSuperiore;
+	private JPanel pannelloBottoni;
 
 	private static Character carattereNascosto = '_';
 	private static String alfabeto = "abcdefghijklmnopqrstuvwxyz";
@@ -34,7 +31,7 @@ public class PannelloGioco extends Pannello {
 	private static Map<Integer, String> pathImmaginiVite = Map.of(1, "assets/1-life.png", 2, "assets/2-lives.png", 3,
 			"assets/3-lives.png", 4, "assets/4-lives.png", 5, "assets/5-lives.png");
 
-	private static LayoutManager layout = new GridLayout(2, 1, 50, 50);
+	private static LayoutManager layout = new GridLayout(2, 1, 20, 20);
 
 	public static final GraficaPannello GRAFICA_DEFAULT = new GraficaPannello(
 			Map.of(TipoSfondo.PANNELLO, GraficaPannello.GIALLO, TipoSfondo.BOTTONE, GraficaPannello.AZZURRO,
@@ -42,12 +39,12 @@ public class PannelloGioco extends Pannello {
 			Map.of(TipoTesto.TITOLO, new Font("Stencil", Font.PLAIN, 65), TipoTesto.BOTTONE,
 					new Font("Arial", Font.PLAIN, 30), TipoTesto.NORMALE, new Font("Calibri Light", Font.PLAIN, 40)));
 
-	public PannelloGioco(String parola) {
-		this(GRAFICA_DEFAULT, parola);
+	public PannelloGioco(GiocoImpiccato modello, String parola) {
+		this(modello, GRAFICA_DEFAULT, parola);
 	}
 
-	public PannelloGioco(GraficaPannello grafica, String parola) {
-		super(layout, grafica);
+	public PannelloGioco(GiocoImpiccato modello, GraficaPannello grafica, String parola) {
+		super(modello, layout, grafica);
 		immagineVite = grafica.creaImmagine(pathImmagineVite);
 		bottoneMenu = grafica.creaBottone(indicazioneMenu, GraficaPannello.GIALLO);
 		bottoneMenu.setFont(new Font("Segoe Script", Font.PLAIN, 25));
@@ -56,13 +53,13 @@ public class PannelloGioco extends Pannello {
 		bottoniLettere = (Map<Character, JButton>) alfabeto.chars().mapToObj(i -> (char) i)
 				.collect(Collectors.toMap(x -> (Character) x, x -> grafica.creaBottone(x.toString().toUpperCase())));
 
-		inizializzaPannelloGioco();
-	}
+		pannelloSuperiore = creaPannelloSuperiore();
+		pannelloBottoni = creaPannelloBottoni();
 
-	private void inizializzaPannelloGioco() {
 		setBorder(BorderFactory.createEmptyBorder(70, 70, 70, 70));
-		add(creaPannelloSuperiore());
-		add(creaPannelloBottoni());
+		add(pannelloSuperiore);
+		add(pannelloBottoni);
+		mostraEsito(PannelloEsito.TipoEsito.SCONFITTA);
 	}
 
 	private JPanel creaPannelloSuperiore() {
@@ -90,4 +87,10 @@ public class PannelloGioco extends Pannello {
 		});
 		return p;
 	}
+
+	public void mostraEsito(PannelloEsito.TipoEsito esito) {
+		remove(pannelloBottoni);
+		add(new PannelloEsito(getModello(), parola.getText(), esito));
+	}
+
 }

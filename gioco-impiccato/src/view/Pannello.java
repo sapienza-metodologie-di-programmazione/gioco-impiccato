@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
+import model.GiocoImpiccato;
 import view.GraficaPannello.TipoSfondo;
 import view.GraficaPannello.TipoTesto;
 
@@ -20,11 +21,7 @@ public class Pannello extends JPanel {
 		UIManager.put("Button.focus", GraficaPannello.TRASPARENTE);
 	}
 
-	// usare factory pannelli?
-	public enum TipoPannello {
-		MENU, STATISTICHE, GIOCO, ESITO_PARTITA
-	}
-
+	private GiocoImpiccato modello;
 	private GraficaPannello grafica = new GraficaPannello();
 	private static Color coloreSfondoDefault = Color.WHITE;
 
@@ -34,20 +31,28 @@ public class Pannello extends JPanel {
 			Map.of(TipoTesto.TITOLO, new Font("Stencil", Font.PLAIN, 65), TipoTesto.BOTTONE, GraficaPannello.CORSIVO,
 					TipoTesto.NORMALE, new Font("Calibri Light", Font.PLAIN, 40)));
 
-	public Pannello() {
+	public Pannello(GiocoImpiccato modello) {
+		this.modello = modello;
 	}
 
-	public Pannello(LayoutManager layout) {
+	public Pannello(GiocoImpiccato modello, LayoutManager layout) {
 		super(layout);
+		this.modello = modello;
 	}
 
-	public Pannello(GraficaPannello grafica) {
+	public Pannello(GiocoImpiccato modello, GraficaPannello grafica) {
+		this(modello);
 		this.grafica = grafica;
 	}
 
-	public Pannello(LayoutManager layout, GraficaPannello grafica) {
+	public Pannello(GiocoImpiccato modello, LayoutManager layout, GraficaPannello grafica) {
 		super(layout);
+		this.modello = modello;
 		this.grafica = grafica;
+	}
+
+	public GiocoImpiccato getModello() {
+		return modello;
 	}
 
 	public GraficaPannello getGrafica() {

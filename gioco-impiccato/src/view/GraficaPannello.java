@@ -2,8 +2,10 @@ package view;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,8 +17,10 @@ public class GraficaPannello {
 	public static final Color ARANCIONE = Color.decode("#f08c00");
 	public static final Color GIALLO = Color.decode("#ffec99");
 	public static final Color VERDE = Color.decode("#b2f2bb");
+	public static final Color VERDE_SCURO = Color.decode("#2f9e44");
 	public static final Color AZZURRO = Color.decode("#a5d8ff");
 	public static final Color BLU = Color.decode("#1971c2");
+	public static final Color ROSSO = Color.decode("#e03131");
 
 	public static final Font CORSIVO = new Font("Segoe Script", Font.PLAIN, 30);
 
@@ -63,12 +67,28 @@ public class GraficaPannello {
 		return creaTesto(TipoTesto.NORMALE, testo);
 	}
 
+	public JLabel creaTestoNormale(String testo, Color colore) {
+		return creaTesto(TipoTesto.NORMALE, testo, colore);
+	}
+
 	private JLabel creaTesto(TipoTesto t, String contenuto) {
+		return creaTesto(contenuto, Optional.ofNullable(colori.get(t)), Optional.ofNullable(fonts.get(t)));
+	}
+
+	private JLabel creaTesto(TipoTesto t, String contenuto, Color colore) {
+		return creaTesto(contenuto, Optional.of(colore), Optional.ofNullable(fonts.get(t)));
+	}
+
+	private JLabel creaTesto(TipoTesto t, String contenuto, Font font) {
+		return creaTesto(contenuto, Optional.ofNullable(colori.get(t)), Optional.of(font));
+	}
+
+	private JLabel creaTesto(String contenuto, Optional<Color> colore, Optional<Font> font) {
 		JLabel l = new JLabel(contenuto);
-		if (colori.containsKey(t))
-			l.setForeground(colori.get(t));
-		if (fonts.containsKey(t))
-			l.setFont(fonts.get(t));
+		if (!colore.isEmpty())
+			l.setForeground(colore.get());
+		if (!font.isEmpty())
+			l.setFont(font.get());
 		return l;
 	}
 
@@ -95,4 +115,19 @@ public class GraficaPannello {
 		return new JLabel(new ImageIcon(path));
 	}
 
+	public static GridBagConstraints generaDisposizione(int x, int y, int w, int h, int a) {
+		return generaDisposizione(x, y, w, h, a, 1, 1);
+	}
+
+	public static GridBagConstraints generaDisposizione(int x, int y, int w, int h, int a, int wx, int wy) {
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = x;
+		c.gridy = y;
+		c.gridwidth = w;
+		c.gridheight = h;
+		c.anchor = a;
+		c.weightx = wx;
+		c.weighty = wy;
+		return c;
+	}
 }
