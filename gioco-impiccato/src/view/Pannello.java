@@ -5,15 +5,18 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
 import java.util.Map;
+import java.util.Observer;
 
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
-import model.GiocoImpiccato;
 import view.GraficaPannello.TipoSfondo;
 import view.GraficaPannello.TipoTesto;
 
-public class Pannello extends JPanel {
+/**
+ * Classe che rappresenta un pannello generico per il Gioco dell'Impiccato
+ */
+abstract public class Pannello extends JPanel implements Observer {
 
 	static {
 		UIManager.put("Button.highlight", GraficaPannello.ARANCIONE);
@@ -21,7 +24,6 @@ public class Pannello extends JPanel {
 		UIManager.put("Button.focus", GraficaPannello.TRASPARENTE);
 	}
 
-	private GiocoImpiccato modello;
 	private GraficaPannello grafica = new GraficaPannello();
 	private static Color coloreSfondoDefault = Color.WHITE;
 
@@ -31,28 +33,17 @@ public class Pannello extends JPanel {
 			Map.of(TipoTesto.TITOLO, new Font("Stencil", Font.PLAIN, 65), TipoTesto.BOTTONE, GraficaPannello.CORSIVO,
 					TipoTesto.NORMALE, new Font("Calibri Light", Font.PLAIN, 40)));
 
-	public Pannello(GiocoImpiccato modello) {
-		this.modello = modello;
-	}
-
-	public Pannello(GiocoImpiccato modello, LayoutManager layout) {
+	public Pannello(LayoutManager layout) {
 		super(layout);
-		this.modello = modello;
 	}
 
-	public Pannello(GiocoImpiccato modello, GraficaPannello grafica) {
-		this(modello);
+	public Pannello(GraficaPannello grafica) {
 		this.grafica = grafica;
 	}
 
-	public Pannello(GiocoImpiccato modello, LayoutManager layout, GraficaPannello grafica) {
+	public Pannello(LayoutManager layout, GraficaPannello grafica) {
 		super(layout);
-		this.modello = modello;
 		this.grafica = grafica;
-	}
-
-	public GiocoImpiccato getModello() {
-		return modello;
 	}
 
 	public GraficaPannello getGrafica() {
@@ -68,4 +59,9 @@ public class Pannello extends JPanel {
 			g.drawLine(x, 0, 0, x);
 		}
 	}
+
+//	@Override
+//	public void update(Observable modello, Object arg) {
+//		// comportamento specificato nelle sotto-classi
+//	}
 }

@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.util.Map;
+import java.util.Observable;
 import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
@@ -11,18 +12,24 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import model.GiocoImpiccato;
 import view.GraficaPannello.TipoSfondo;
 import view.GraficaPannello.TipoTesto;
+import view.PannelloEsito.TipoEsito;
 
+/**
+ * Classe che rappresenta un pannello in cui si svolge una partita del Gioco
+ * dell'Impiccato
+ */
 public class PannelloGioco extends Pannello {
 
 	private JLabel immagineVite;
 	private JButton bottoneMenu;
-	private JLabel parola;
+	private JLabel vistaParola;
 	private Map<Character, JButton> bottoniLettere;
 	private JPanel pannelloSuperiore;
 	private JPanel pannelloBottoni;
+	private PannelloEsito pannelloVittoria;
+	private PannelloEsito pannelloSconfitta;
 
 	private static Character carattereNascosto = '_';
 	private static String alfabeto = "abcdefghijklmnopqrstuvwxyz";
@@ -39,27 +46,36 @@ public class PannelloGioco extends Pannello {
 			Map.of(TipoTesto.TITOLO, new Font("Stencil", Font.PLAIN, 65), TipoTesto.BOTTONE,
 					new Font("Arial", Font.PLAIN, 30), TipoTesto.NORMALE, new Font("Calibri Light", Font.PLAIN, 40)));
 
-	public PannelloGioco(GiocoImpiccato modello, String parola) {
-		this(modello, GRAFICA_DEFAULT, parola);
+	public PannelloGioco(String parola) {
+		this(GRAFICA_DEFAULT, parola);
 	}
 
-	public PannelloGioco(GiocoImpiccato modello, GraficaPannello grafica, String parola) {
-		super(modello, layout, grafica);
+	public PannelloGioco(GraficaPannello grafica, String parola) {
+		super(layout, grafica);
 		immagineVite = grafica.creaImmagine(pathImmagineVite);
 		bottoneMenu = grafica.creaBottone(indicazioneMenu, GraficaPannello.GIALLO);
 		bottoneMenu.setFont(new Font("Segoe Script", Font.PLAIN, 25));
 
-		this.parola = grafica.creaTitolo((carattereNascosto + " ").repeat(parola.length()).strip());
-		bottoniLettere = (Map<Character, JButton>) alfabeto.chars().mapToObj(i -> (char) i)
-				.collect(Collectors.toMap(x -> (Character) x, x -> grafica.creaBottone(x.toString().toUpperCase())));
-
+		vistaParola = creaVistaParola(parola);
+		bottoniLettere = creaBottoniLettere();
 		pannelloSuperiore = creaPannelloSuperiore();
 		pannelloBottoni = creaPannelloBottoni();
+		pannelloVittoria = new PannelloEsito(TipoEsito.VITTORIA);
+		pannelloSconfitta = new PannelloEsito(TipoEsito.SCONFITTA);
 
 		setBorder(BorderFactory.createEmptyBorder(70, 70, 70, 70));
 		add(pannelloSuperiore);
 		add(pannelloBottoni);
 		mostraEsito(PannelloEsito.TipoEsito.SCONFITTA);
+	}
+
+	private JLabel creaVistaParola(String parola) {
+		return getGrafica().creaTitolo((carattereNascosto + " ").repeat(parola.length()).strip());
+	}
+
+	private Map<Character, JButton> creaBottoniLettere() {
+		return (Map<Character, JButton>) alfabeto.chars().mapToObj(i -> (char) i).collect(
+				Collectors.toMap(x -> (Character) x, x -> getGrafica().creaBottone(x.toString().toUpperCase())));
 	}
 
 	private JPanel creaPannelloSuperiore() {
@@ -71,7 +87,7 @@ public class PannelloGioco extends Pannello {
 
 			}
 		});
-		p.add(parola);
+		p.add(vistaParola);
 		return p;
 	}
 
@@ -90,7 +106,12 @@ public class PannelloGioco extends Pannello {
 
 	public void mostraEsito(PannelloEsito.TipoEsito esito) {
 		remove(pannelloBottoni);
-		add(new PannelloEsito(getModello(), parola.getText(), esito));
+		add(pannelloVittoria);
+	}
+
+	@Override
+	public void update(Observable modello, Object arg) {
+
 	}
 
 }

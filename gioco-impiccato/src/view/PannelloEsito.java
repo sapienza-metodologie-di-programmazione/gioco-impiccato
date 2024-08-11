@@ -7,15 +7,19 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.LayoutManager;
 import java.util.Map;
+import java.util.Observable;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import model.GiocoImpiccato;
 import view.GraficaPannello.TipoSfondo;
 import view.GraficaPannello.TipoTesto;
 
+/**
+ * Classe che rappresenta un pannello che mostra l'esito di una partita al Gioco
+ * dell'Impiccato
+ */
 public class PannelloEsito extends Pannello {
 
 	public enum TipoEsito {
@@ -23,8 +27,8 @@ public class PannelloEsito extends Pannello {
 		VITTORIA("assets/victory.png", GraficaPannello.VERDE_SCURO),
 		SCONFITTA("assets/game-over.png", GraficaPannello.ROSSO);
 
-		private final String pathImmagine;
-		private final Color colore;
+		private String pathImmagine; // icona vittoria o sconfitta
+		private Color colore; // colore tematico vittoria o sconfitta
 
 		private TipoEsito(String pathImmagine, Color colore) {
 			this.pathImmagine = pathImmagine;
@@ -39,6 +43,7 @@ public class PannelloEsito extends Pannello {
 			return colore;
 		}
 
+		// commento vittoria o sconfitta con riepilogo statistiche
 		public String getCommento(String parola, int partiteGiocate, int partiteVinte) {
 			String stat = "Partite giocate: " + partiteGiocate + "<br>Partite Vinte: " + partiteVinte;
 			return switch (this) {
@@ -62,17 +67,15 @@ public class PannelloEsito extends Pannello {
 			Map.of(TipoTesto.BOTTONE, new Font("Segoe Script", Font.PLAIN, 25), TipoTesto.NORMALE,
 					new Font("Calibri Light", Font.PLAIN, 35)));
 
-	public PannelloEsito(GiocoImpiccato modello, String parola, TipoEsito esito) {
-		this(modello, GRAFICA_DEFAULT, parola, esito);
+	public PannelloEsito(TipoEsito esito) {
+		this(GRAFICA_DEFAULT, esito);
 	}
 
-	public PannelloEsito(GiocoImpiccato modello, GraficaPannello grafica, String parola, TipoEsito esito) {
-		super(modello, layout, grafica);
+	public PannelloEsito(GraficaPannello grafica, TipoEsito esito) {
+		super(layout, grafica);
 		this.esito = esito;
 		immagine = grafica.creaImmagine(esito.getPathImmagine());
-		testo = grafica.creaTestoNormale(
-				esito.getCommento(parola, getModello().getPartiteGiocate(), getModello().getPartiteVinte()),
-				esito.getColore());
+		testo = grafica.creaTestoNormale(esito.getCommento("", 0, 0), esito.getColore());
 		bottoneNuovaParola = grafica.creaBottone(indicazioneNuovaParola);
 
 		GridBagConstraints disp = GraficaPannello.generaDisposizione(0, 0, 1, 0, GridBagConstraints.WEST);
@@ -94,4 +97,10 @@ public class PannelloEsito extends Pannello {
 		}, disp);
 
 	}
+
+	@Override
+	public void update(Observable modello, Object arg) {
+
+	}
+
 }

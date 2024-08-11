@@ -11,6 +11,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
+/**
+ * Classe con campi statici e metodi di utilità per gestire l'aspetto (colore,
+ * font e disposizione degli elementi) dei pannelli del Gioco dell'Impiccato
+ */
 public class GraficaPannello {
 
 	public static final Color TRASPARENTE = new Color(0, 0, 0, 0);

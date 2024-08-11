@@ -2,14 +2,17 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.LayoutManager;
+import java.util.Observable;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import model.GiocoImpiccato;
-
+/**
+ * Classe che rappresenta un pannello che mostra le statistiche (partite giocate
+ * e vinte, ultima parola indovinata) per il Gioco dell'Impiccato
+ */
 public class PannelloStatistiche extends Pannello {
 
 	private JLabel titolo;
@@ -23,14 +26,14 @@ public class PannelloStatistiche extends Pannello {
 	private static String indicazioneUltimaParolaIndovinata = "Ultima parola indovinata: ";
 	private static LayoutManager layout = new BorderLayout(50, 50);
 
-	public PannelloStatistiche(GiocoImpiccato modello) {
-		this(modello, GRAFICA_DEFAULT);
+	public PannelloStatistiche() {
+		this(GRAFICA_DEFAULT);
 
 	}
 
-	public PannelloStatistiche(GiocoImpiccato modello, GraficaPannello grafica) {
+	public PannelloStatistiche(GraficaPannello grafica) {
 
-		super(modello, layout, grafica);
+		super(layout, grafica);
 		titolo = grafica.creaTitolo(nomeSchermata);
 		statistiche = grafica.creaTestoNormale(generaStatistiche(0, 0, ""));
 		bottoneMenu = grafica.creaBottone(indicazioneMenu);
@@ -61,14 +64,6 @@ public class PannelloStatistiche extends Pannello {
 		}, BorderLayout.SOUTH);
 	}
 
-	public static String generaStatistiche(int partiteGiocate, int partiteVinte, String ultimaParolaIndovinata) {
-		StringBuilder sb = new StringBuilder();
-		sb.append("<html>" + indicazionePartiteGiocate + partiteGiocate + "<br>");
-		sb.append(indicazionePartiteVinte + partiteVinte + "<br>");
-		sb.append(indicazioneUltimaParolaIndovinata + ultimaParolaIndovinata);
-		return sb.toString();
-	}
-
 	public JLabel getTitolo() {
 		return titolo;
 	}
@@ -81,4 +76,16 @@ public class PannelloStatistiche extends Pannello {
 		return bottoneMenu;
 	}
 
+	public static String generaStatistiche(int partiteGiocate, int partiteVinte, String ultimaParolaIndovinata) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("<html>" + indicazionePartiteGiocate + partiteGiocate + "<br>");
+		sb.append(indicazionePartiteVinte + partiteVinte + "<br>");
+		sb.append(indicazioneUltimaParolaIndovinata + ultimaParolaIndovinata);
+		return sb.toString();
+	}
+
+	@Override
+	public void update(Observable modello, Object arg) {
+
+	}
 }

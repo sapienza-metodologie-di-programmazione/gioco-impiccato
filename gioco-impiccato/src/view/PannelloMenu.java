@@ -5,14 +5,16 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
+import java.util.Observable;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import model.GiocoImpiccato;
-
+/**
+ * Classe che rappresenta un pannello con il menù del Gioco dell'Impiccato
+ */
 public class PannelloMenu extends Pannello {
 
 	private JLabel titolo;
@@ -26,13 +28,13 @@ public class PannelloMenu extends Pannello {
 	private static String indicazioneStatistiche = "Statistiche";
 	private static LayoutManager layout = new GridLayout(1, 2, 40, 0);
 
-	public PannelloMenu(GiocoImpiccato modello) {
-		this(modello, GRAFICA_DEFAULT);
+	public PannelloMenu() {
+		this(GRAFICA_DEFAULT);
 	}
 
-	public PannelloMenu(GiocoImpiccato modello, GraficaPannello grafica) {
+	public PannelloMenu(GraficaPannello grafica) {
 
-		super(modello, layout, grafica);
+		super(layout, grafica);
 		titolo = grafica.creaTitolo(nomeGioco);
 		immagine = grafica.creaImmagine(pathImmagine);
 		bottoneGioco = grafica.creaBottone(indicazioneGioco);
@@ -73,6 +75,11 @@ public class PannelloMenu extends Pannello {
 
 	public JButton getBottoneStatistiche() {
 		return bottoneStatistiche;
+	}
+
+	@Override
+	public void update(Observable modello, Object arg) {
+
 	}
 
 }
