@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.CardLayout;
 import java.io.File;
 import java.io.IOException;
 
@@ -29,17 +30,25 @@ public class FinestraGiocoImpiccato extends JFrame {
 	public FinestraGiocoImpiccato() {
 
 		super(titolo);
+
+		pannelloMenu = new PannelloMenu();
+		pannelloStatistiche = new PannelloStatistiche();
+		pannelloGenerale = new JPanel(new CardLayout()) {
+			{
+				add(pannelloMenu, Pannello.TipoPannello.MENU.name());
+				add(pannelloStatistiche, Pannello.TipoPannello.STATISTICHE.name());
+			}
+		};
+
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		try {
 			setIconImage(ImageIO.read(new File(pathIcona)));
 		} catch (IOException e) {
 		}
 
-		add(new PannelloGioco("ciao"));
-		// add(new PannelloStatistiche());
-		// add(new PannelloMenu());
-		pack();
-		// setSize(dimensioni[0], dimensioni[1]);
+		add(pannelloGenerale);
+		pack(); // setta le dimensioni della finestra al minimo necessario per mostrare gli
+				// elementi da essa contenuti
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
@@ -60,8 +69,15 @@ public class FinestraGiocoImpiccato extends JFrame {
 		return pannelloGioco;
 	}
 
-	public static void main(String[] args) {
-		FinestraGiocoImpiccato f = new FinestraGiocoImpiccato();
+	public void setPannelloGioco(String parola) {
+		if (pannelloGioco != null)
+			pannelloGenerale.remove(pannelloGioco);
+		pannelloGioco = new PannelloGioco(parola);
+		pannelloGenerale.add(pannelloGioco, Pannello.TipoPannello.GIOCO.name());
+	}
+
+	public void visualizzaPannello(Pannello.TipoPannello tipoPannello) {
+		((CardLayout) pannelloGenerale.getLayout()).show(pannelloGenerale, tipoPannello.name());
 	}
 
 }

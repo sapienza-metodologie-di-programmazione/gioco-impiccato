@@ -18,6 +18,10 @@ import view.GraficaPannello.TipoTesto;
  */
 abstract public class Pannello extends JPanel implements Observer {
 
+	public enum TipoPannello {
+		MENU, STATISTICHE, GIOCO
+	}
+
 	static {
 		UIManager.put("Button.highlight", GraficaPannello.ARANCIONE);
 		UIManager.put("Button.select", GraficaPannello.ARANCIONE);

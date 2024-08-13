@@ -13,11 +13,17 @@ public class GiocoImpiccato extends Observable {
 	private Optional<String> ultimaParolaIndovinata;
 	private Optional<PartitaImpiccato> partitaCorrente;
 
+	private static String pathFileParole;
+
 	public GiocoImpiccato() {
 	}
 
 	public GiocoImpiccato(Path fileParole) {
 
+	}
+
+	public String generaParola() {
+		return "ciao";
 	}
 
 	public int getPartiteGiocate() {
@@ -68,8 +74,11 @@ public class GiocoImpiccato extends Observable {
 	 */
 	public boolean terminaPartita() {
 		boolean b = partitaCorrente.isPresent();
-		if (b)
+		if (b) {
+			setChanged();
+			notifyObservers(partitaCorrente.get().getStato());
 			partitaCorrente = Optional.empty();
+		}
 		return b;
 	}
 }

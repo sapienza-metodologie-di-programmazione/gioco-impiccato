@@ -52,21 +52,29 @@ public class PartitaImpiccato {
 		return lettereUsate;
 	}
 
-	public void aumentaErrori() {
-		errori++;
-	}
-
 	public void aggiungiLetteraUsata(Character lettera) {
 		lettereUsate.add(lettera);
+		if (!lettereParola.contains(lettera)) {
+			errori++;
+			if (checkSconfitta()) {
+				stato = StatoPartita.PERSA;
+				gioco.terminaPartita();
+			}
+		} else {
+			if (checkVittoria()) {
+				stato = StatoPartita.VINTA;
+				gioco.terminaPartita();
+			}
+		}
 	}
 
 	// metodo per controllare se si sono verificate le condizioni di vittoria
 	// della partita
-	public boolean checkVittoria() {
-		return !checkSconfitta() && lettereUsate.containsAll(lettereParola);
+	private boolean checkVittoria() {
+		return lettereUsate.containsAll(lettereParola);
 	}
 
-	public boolean checkSconfitta() {
+	private boolean checkSconfitta() {
 		return errori > MAX_ERRORI;
 	}
 }

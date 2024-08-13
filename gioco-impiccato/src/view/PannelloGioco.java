@@ -66,7 +66,6 @@ public class PannelloGioco extends Pannello {
 		setBorder(BorderFactory.createEmptyBorder(70, 70, 70, 70));
 		add(pannelloSuperiore);
 		add(pannelloBottoni);
-		mostraEsito(PannelloEsito.TipoEsito.SCONFITTA);
 	}
 
 	private JLabel creaVistaParola(String parola) {
@@ -104,9 +103,21 @@ public class PannelloGioco extends Pannello {
 		return p;
 	}
 
+	public JButton getBottoneMenu() {
+		return bottoneMenu;
+	}
+
+	public Map<Character, JButton> getBottoniLettere() {
+		return bottoniLettere;
+	}
+
 	public void mostraEsito(PannelloEsito.TipoEsito esito) {
 		remove(pannelloBottoni);
-		add(pannelloVittoria);
+		switch (esito) {
+		case VITTORIA -> add(pannelloVittoria);
+		case SCONFITTA -> add(pannelloSconfitta);
+		}
+
 	}
 
 	@Override
