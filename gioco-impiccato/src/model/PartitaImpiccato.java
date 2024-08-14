@@ -60,13 +60,11 @@ public class PartitaImpiccato {
 
 		if (checkSconfitta()) {
 			stato = StatoPartita.PERSA;
-			gioco.notifyObservers();
 			gioco.terminaPartita();
 		}
 
 		else if (checkVittoria()) {
 			stato = StatoPartita.VINTA;
-			gioco.notifyObservers();
 			gioco.terminaPartita();
 		}
 

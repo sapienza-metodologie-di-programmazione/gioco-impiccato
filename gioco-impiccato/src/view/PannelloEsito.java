@@ -26,7 +26,7 @@ public class PannelloEsito extends Pannello {
 
 	public enum TipoEsito {
 
-		VITTORIA("assets/victory.png", GraficaPannello.VERDE_SCURO),
+		VITTORIA("assets/victory.png", GraficaPannello.VERDE),
 		SCONFITTA("assets/game-over.png", GraficaPannello.ROSSO);
 
 		private String pathImmagine; // icona vittoria o sconfitta
@@ -65,7 +65,7 @@ public class PannelloEsito extends Pannello {
 
 	public static final GraficaPannello GRAFICA_DEFAULT = new GraficaPannello(
 			Map.of(TipoSfondo.PANNELLO, GraficaPannello.TRASPARENTE, TipoSfondo.BOTTONE, GraficaPannello.GIALLO,
-					TipoTesto.TITOLO, GraficaPannello.VERDE, TipoTesto.NORMALE, GraficaPannello.VERDE),
+					TipoTesto.TITOLO, GraficaPannello.VERDE_CHIARO, TipoTesto.NORMALE, GraficaPannello.VERDE_CHIARO),
 			Map.of(TipoTesto.BOTTONE, new Font("Segoe Script", Font.PLAIN, 25), TipoTesto.NORMALE,
 					new Font("Calibri Light", Font.PLAIN, 35)));
 

@@ -32,7 +32,7 @@ abstract public class Pannello extends JPanel implements Observer {
 	private static Color coloreSfondoDefault = Color.WHITE;
 
 	public static final GraficaPannello GRAFICA_DEFAULT = new GraficaPannello(
-			Map.of(TipoSfondo.PANNELLO, GraficaPannello.VERDE, TipoSfondo.BOTTONE, GraficaPannello.GIALLO,
+			Map.of(TipoSfondo.PANNELLO, GraficaPannello.VERDE_CHIARO, TipoSfondo.BOTTONE, GraficaPannello.GIALLO,
 					TipoTesto.TITOLO, GraficaPannello.ARANCIONE),
 			Map.of(TipoTesto.TITOLO, new Font("Stencil", Font.PLAIN, 65), TipoTesto.BOTTONE, GraficaPannello.CORSIVO,
 					TipoTesto.NORMALE, new Font("Calibri Light", Font.PLAIN, 40)));

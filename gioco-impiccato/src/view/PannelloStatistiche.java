@@ -9,6 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import model.GiocoImpiccato;
+
 /**
  * Classe che rappresenta un pannello che mostra le statistiche (partite giocate
  * e vinte, ultima parola indovinata) per il Gioco dell'Impiccato
@@ -80,12 +82,14 @@ public class PannelloStatistiche extends Pannello {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<html>" + indicazionePartiteGiocate + partiteGiocate + "<br>");
 		sb.append(indicazionePartiteVinte + partiteVinte + "<br>");
-		sb.append(indicazioneUltimaParolaIndovinata + ultimaParolaIndovinata);
+		sb.append(indicazioneUltimaParolaIndovinata + "\"" + ultimaParolaIndovinata.toUpperCase() + "\"");
 		return sb.toString();
 	}
 
 	@Override
 	public void update(Observable modello, Object arg) {
-
+		GiocoImpiccato g = (GiocoImpiccato) modello;
+		statistiche.setText(generaStatistiche(g.getPartiteGiocate(), g.getPartiteVinte(),
+				g.getUltimaParolaIndovinata().orElse("")));
 	}
 }

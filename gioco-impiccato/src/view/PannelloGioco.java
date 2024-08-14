@@ -153,7 +153,7 @@ public class PannelloGioco extends Pannello {
 
 	private void aggiornaBottoneLettera(String parola, Character c, JButton b) {
 		if (parola.indexOf(c) != -1) {
-			b.setBackground(GraficaPannello.VERDE);
+			b.setBackground(GraficaPannello.VERDE_CHIARO);
 		} else {
 			b.setBackground(GraficaPannello.ROSSO_CHIARO);
 		}

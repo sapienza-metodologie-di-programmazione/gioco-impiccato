@@ -76,7 +76,7 @@ public class GiocoImpiccato extends Observable {
 		partiteVinte++;
 	}
 
-	public void setUltimaParolaIndovinata(String parola) {
+	private void setUltimaParolaIndovinata(String parola) {
 		ultimaParolaIndovinata = Optional.of(parola);
 	}
 
@@ -101,6 +101,12 @@ public class GiocoImpiccato extends Observable {
 	public boolean terminaPartita() {
 		boolean b = partitaCorrente.isPresent();
 		if (b) {
+			partiteGiocate++;
+			if (partitaCorrente.get().getStato().equals(PartitaImpiccato.StatoPartita.VINTA)) {
+				partiteVinte++;
+				setUltimaParolaIndovinata(partitaCorrente.get().getParola());
+			}
+			notifyObservers();
 			partitaCorrente = Optional.empty();
 		}
 		return b;

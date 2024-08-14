@@ -20,8 +20,8 @@ public class GraficaPannello {
 	public static final Color TRASPARENTE = new Color(0, 0, 0, 0);
 	public static final Color ARANCIONE = Color.decode("#f08c00");
 	public static final Color GIALLO = Color.decode("#ffec99");
-	public static final Color VERDE = Color.decode("#b2f2bb");
-	public static final Color VERDE_SCURO = Color.decode("#2f9e44");
+	public static final Color VERDE = Color.decode("#2f9e44");
+	public static final Color VERDE_CHIARO = Color.decode("#b2f2bb");
 	public static final Color AZZURRO = Color.decode("#a5d8ff");
 	public static final Color BLU = Color.decode("#1971c2");
 	public static final Color ROSSO = Color.decode("#e03131");
