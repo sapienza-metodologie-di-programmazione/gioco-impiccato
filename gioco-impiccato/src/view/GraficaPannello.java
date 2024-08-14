@@ -25,6 +25,7 @@ public class GraficaPannello {
 	public static final Color AZZURRO = Color.decode("#a5d8ff");
 	public static final Color BLU = Color.decode("#1971c2");
 	public static final Color ROSSO = Color.decode("#e03131");
+	public static final Color ROSSO_CHIARO = Color.decode("#ffc9c9");
 
 	public static final Font CORSIVO = new Font("Segoe Script", Font.PLAIN, 30);
 

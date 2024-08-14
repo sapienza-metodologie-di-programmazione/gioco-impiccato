@@ -1,10 +1,12 @@
 package controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import model.GiocoImpiccato;
 import view.FinestraGiocoImpiccato;
 import view.Pannello;
+import view.PannelloEsito;
 import view.PannelloGioco;
 
 public class ControlloGiocoImpiccato {
@@ -24,14 +26,20 @@ public class ControlloGiocoImpiccato {
 		inizializzaBottoniStatistiche();
 	}
 
+	private void inizializzaPartita() {
+		Optional<PannelloGioco> vecchio = vista.getPannelloGioco();
+		if (vecchio.isPresent())
+			modello.deleteObserver(vecchio.get());
+		modello.iniziaPartita();
+		vista.setPannelloGioco(modello.getPartitaCorrente().get().getParola());
+		modello.addObserver(vista.getPannelloGioco().get());
+		modello.addObserver(vista.getPannelloGioco().get().getPannelloVittoria());
+		modello.addObserver(vista.getPannelloGioco().get().getPannelloSconfitta());
+	}
+
 	private void inizializzaBottoniMenu() {
 		vista.getPannelloMenu().getBottoneGioco().addActionListener(e -> {
-			Optional<PannelloGioco> vecchio = vista.getPannelloGioco();
-			if (vecchio.isPresent())
-				modello.deleteObserver(vecchio.get());
-			modello.iniziaPartita();
-			vista.setPannelloGioco(modello.getPartitaCorrente().get().getParola());
-			modello.addObserver(vista.getPannelloGioco().get());
+			inizializzaPartita();
 			inizializzaBottoniGioco();
 			cambiaSchermata(Pannello.TipoPannello.GIOCO);
 		});
@@ -46,9 +54,30 @@ public class ControlloGiocoImpiccato {
 	}
 
 	private void inizializzaBottoniGioco() {
+		inizializzaBottoneMenuDaGioco();
+		inizializzaBottoniLettere();
+		inizializzaBottoneNuovaParola();
+	}
+
+	private void inizializzaBottoneMenuDaGioco() {
 		vista.getPannelloGioco().get().getBottoneMenu()
 				.addActionListener(e -> cambiaSchermata(Pannello.TipoPannello.MENU));
+	}
 
+	private void inizializzaBottoniLettere() {
+		vista.getPannelloGioco().get().getBottoniLettere().forEach(
+				(c, b) -> b.addActionListener(e -> modello.getPartitaCorrente().get().aggiungiLetteraUsata(c)));
+	}
+
+	private void inizializzaBottoneNuovaParola() {
+		for (PannelloEsito p : List.of(vista.getPannelloGioco().get().getPannelloVittoria(),
+				vista.getPannelloGioco().get().getPannelloSconfitta())) {
+			p.getBottoneNuovaParola().addActionListener(e -> {
+				inizializzaPartita();
+				inizializzaBottoniGioco();
+				cambiaSchermata(Pannello.TipoPannello.GIOCO);
+			});
+		}
 	}
 
 	private void cambiaSchermata(Pannello.TipoPannello schermata) {

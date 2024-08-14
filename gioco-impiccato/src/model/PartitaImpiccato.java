@@ -54,18 +54,22 @@ public class PartitaImpiccato {
 
 	public void aggiungiLetteraUsata(Character lettera) {
 		lettereUsate.add(lettera);
-		if (!lettereParola.contains(lettera)) {
+		if (!lettereParola.contains(lettera))
 			errori++;
-			if (checkSconfitta()) {
-				stato = StatoPartita.PERSA;
-				gioco.terminaPartita();
-			}
-		} else {
-			if (checkVittoria()) {
-				stato = StatoPartita.VINTA;
-				gioco.terminaPartita();
-			}
+		gioco.notifyObservers();
+
+		if (checkSconfitta()) {
+			stato = StatoPartita.PERSA;
+			gioco.notifyObservers();
+			gioco.terminaPartita();
 		}
+
+		else if (checkVittoria()) {
+			stato = StatoPartita.VINTA;
+			gioco.notifyObservers();
+			gioco.terminaPartita();
+		}
+
 	}
 
 	// metodo per controllare se si sono verificate le condizioni di vittoria
@@ -75,6 +79,6 @@ public class PartitaImpiccato {
 	}
 
 	private boolean checkSconfitta() {
-		return errori > MAX_ERRORI;
+		return errori == MAX_ERRORI;
 	}
 }

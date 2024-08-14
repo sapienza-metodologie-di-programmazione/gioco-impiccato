@@ -1,10 +1,12 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.util.Map;
 import java.util.Observable;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
@@ -12,6 +14,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import model.GiocoImpiccato;
+import model.PartitaImpiccato;
 import view.GraficaPannello.TipoSfondo;
 import view.GraficaPannello.TipoTesto;
 import view.PannelloEsito.TipoEsito;
@@ -43,7 +47,7 @@ public class PannelloGioco extends Pannello {
 	public static final GraficaPannello GRAFICA_DEFAULT = new GraficaPannello(
 			Map.of(TipoSfondo.PANNELLO, GraficaPannello.GIALLO, TipoSfondo.BOTTONE, GraficaPannello.AZZURRO,
 					TipoTesto.TITOLO, GraficaPannello.ARANCIONE),
-			Map.of(TipoTesto.TITOLO, new Font("Stencil", Font.PLAIN, 65), TipoTesto.BOTTONE,
+			Map.of(TipoTesto.TITOLO, new Font("Arial Bold", Font.PLAIN, 65), TipoTesto.BOTTONE,
 					new Font("Arial", Font.PLAIN, 30), TipoTesto.NORMALE, new Font("Calibri Light", Font.PLAIN, 40)));
 
 	public PannelloGioco(String parola) {
@@ -67,10 +71,23 @@ public class PannelloGioco extends Pannello {
 		add(pannelloSuperiore);
 		add(pannelloBottoni);
 
+		setBackground(Color.white);
+
 	}
 
 	private JLabel creaVistaParola(String parola) {
 		return getGrafica().creaTitolo((carattereNascosto + " ").repeat(parola.length()).strip());
+	}
+
+	private void aggiornaVistaParola(String parola, Set<Character> lettereVisibili) {
+		String vistaParola = parola.chars().mapToObj(i -> ((char) i)).map(c -> {
+			if (!lettereVisibili.contains(c))
+				return carattereNascosto.toString();
+			else
+				return c.toString().toUpperCase();
+		}).reduce("", (s1, s2) -> s1 + " " + s2);
+		vistaParola.strip();
+		this.vistaParola.setText(vistaParola);
 	}
 
 	private Map<Character, JButton> creaBottoniLettere() {
@@ -112,6 +129,14 @@ public class PannelloGioco extends Pannello {
 		return bottoniLettere;
 	}
 
+	public PannelloEsito getPannelloVittoria() {
+		return pannelloVittoria;
+	}
+
+	public PannelloEsito getPannelloSconfitta() {
+		return pannelloSconfitta;
+	}
+
 	private void aggiornaVite(int numeroVite) {
 		getGrafica().sostituisciImmagine(immagineVite, pathImmaginiVite.get(numeroVite));
 		repaint();
@@ -126,9 +151,38 @@ public class PannelloGioco extends Pannello {
 
 	}
 
+	private void aggiornaBottoneLettera(String parola, Character c, JButton b) {
+		if (parola.indexOf(c) != -1) {
+			b.setBackground(GraficaPannello.VERDE);
+		} else {
+			b.setBackground(GraficaPannello.ROSSO_CHIARO);
+		}
+		b.setEnabled(false);
+	}
+
 	@Override
 	public void update(Observable modello, Object arg) {
+		GiocoImpiccato g = (GiocoImpiccato) modello;
+		PartitaImpiccato p = g.getPartitaCorrente().get();
+		Set<Character> lettereUsate = p.getLettereUsate();
 
+		aggiornaVistaParola(p.getParola(), lettereUsate);
+
+		if (p.getStato() != PartitaImpiccato.StatoPartita.IN_CORSO) {
+			if (p.getStato().equals(PartitaImpiccato.StatoPartita.PERSA))
+				mostraEsito(TipoEsito.SCONFITTA);
+			else
+				mostraEsito(TipoEsito.VITTORIA);
+			return;
+		}
+
+		int vite = PartitaImpiccato.MAX_ERRORI - p.getErrori();
+		aggiornaVite(vite);
+
+		bottoniLettere.forEach((c, b) -> {
+			if (lettereUsate.contains(c))
+				aggiornaBottoneLettera(g.getPartitaCorrente().get().getParola(), c, b);
+		});
 	}
 
 }

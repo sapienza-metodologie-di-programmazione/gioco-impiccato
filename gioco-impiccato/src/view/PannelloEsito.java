@@ -13,6 +13,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import model.GiocoImpiccato;
+import model.PartitaImpiccato;
 import view.GraficaPannello.TipoSfondo;
 import view.GraficaPannello.TipoTesto;
 
@@ -48,7 +50,7 @@ public class PannelloEsito extends Pannello {
 			String stat = "Partite giocate: " + partiteGiocate + "<br>Partite Vinte: " + partiteVinte;
 			return switch (this) {
 			case VITTORIA -> "<html>Complimenti!<br>" + stat + "</html>";
-			case SCONFITTA -> "<html>La parola era \"" + parola + "\"<br>" + stat + "</html>";
+			case SCONFITTA -> "<html>La parola era \"" + parola.toUpperCase() + "\"<br>" + stat + "</html>";
 			};
 		}
 
@@ -98,9 +100,15 @@ public class PannelloEsito extends Pannello {
 
 	}
 
+	public JButton getBottoneNuovaParola() {
+		return bottoneNuovaParola;
+	}
+
 	@Override
 	public void update(Observable modello, Object arg) {
-
+		GiocoImpiccato g = (GiocoImpiccato) modello;
+		PartitaImpiccato p = g.getPartitaCorrente().get();
+		testo.setText(esito.getCommento(p.getParola(), g.getPartiteGiocate(), g.getPartiteVinte()));
 	}
 
 }

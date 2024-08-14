@@ -101,10 +101,14 @@ public class GiocoImpiccato extends Observable {
 	public boolean terminaPartita() {
 		boolean b = partitaCorrente.isPresent();
 		if (b) {
-			setChanged();
-			notifyObservers(partitaCorrente.get().getStato());
 			partitaCorrente = Optional.empty();
 		}
 		return b;
+	}
+
+	@Override
+	public void notifyObservers() {
+		setChanged();
+		super.notifyObservers();
 	}
 }
