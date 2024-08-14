@@ -66,6 +66,7 @@ public class PannelloGioco extends Pannello {
 		setBorder(BorderFactory.createEmptyBorder(70, 70, 70, 70));
 		add(pannelloSuperiore);
 		add(pannelloBottoni);
+
 	}
 
 	private JLabel creaVistaParola(String parola) {
@@ -109,6 +110,11 @@ public class PannelloGioco extends Pannello {
 
 	public Map<Character, JButton> getBottoniLettere() {
 		return bottoniLettere;
+	}
+
+	private void aggiornaVite(int numeroVite) {
+		getGrafica().sostituisciImmagine(immagineVite, pathImmaginiVite.get(numeroVite));
+		repaint();
 	}
 
 	public void mostraEsito(PannelloEsito.TipoEsito esito) {

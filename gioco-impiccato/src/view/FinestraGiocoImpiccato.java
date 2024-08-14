@@ -3,6 +3,7 @@ package view;
 import java.awt.CardLayout;
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -25,7 +26,7 @@ public class FinestraGiocoImpiccato extends JFrame {
 	private JPanel pannelloGenerale;
 	private PannelloMenu pannelloMenu;
 	private PannelloStatistiche pannelloStatistiche;
-	private PannelloGioco pannelloGioco;
+	private Optional<PannelloGioco> pannelloGioco;
 
 	public FinestraGiocoImpiccato() {
 
@@ -33,6 +34,7 @@ public class FinestraGiocoImpiccato extends JFrame {
 
 		pannelloMenu = new PannelloMenu();
 		pannelloStatistiche = new PannelloStatistiche();
+		pannelloGioco = Optional.ofNullable(null);
 		pannelloGenerale = new JPanel(new CardLayout()) {
 			{
 				add(pannelloMenu, Pannello.TipoPannello.MENU.name());
@@ -65,15 +67,15 @@ public class FinestraGiocoImpiccato extends JFrame {
 		return pannelloStatistiche;
 	}
 
-	public PannelloGioco getPannelloGioco() {
+	public Optional<PannelloGioco> getPannelloGioco() {
 		return pannelloGioco;
 	}
 
 	public void setPannelloGioco(String parola) {
-		if (pannelloGioco != null)
-			pannelloGenerale.remove(pannelloGioco);
-		pannelloGioco = new PannelloGioco(parola);
-		pannelloGenerale.add(pannelloGioco, Pannello.TipoPannello.GIOCO.name());
+		if (pannelloGioco.isPresent())
+			pannelloGenerale.remove(pannelloGioco.get());
+		pannelloGioco = Optional.of(new PannelloGioco(parola));
+		pannelloGenerale.add(pannelloGioco.get(), Pannello.TipoPannello.GIOCO.name());
 	}
 
 	public void visualizzaPannello(Pannello.TipoPannello tipoPannello) {

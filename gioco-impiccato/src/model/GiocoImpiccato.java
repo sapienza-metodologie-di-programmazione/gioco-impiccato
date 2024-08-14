@@ -1,9 +1,14 @@
 package model;
 
-import java.nio.file.Path;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.Normalizer;
+import java.util.HashSet;
 import java.util.Observable;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class GiocoImpiccato extends Observable {
 
@@ -13,17 +18,38 @@ public class GiocoImpiccato extends Observable {
 	private Optional<String> ultimaParolaIndovinata;
 	private Optional<PartitaImpiccato> partitaCorrente;
 
-	private static String pathFileParole;
+	private static String pathFileParole = "1000_parole_italiane_comuni.txt";
 
 	public GiocoImpiccato() {
+		this(pathFileParole);
 	}
 
-	public GiocoImpiccato(Path fileParole) {
+	public GiocoImpiccato(String path) {
+		parole = caricaFileParole(path);
+		ultimaParolaIndovinata = Optional.ofNullable(null);
+		partitaCorrente = Optional.ofNullable(null);
+	}
 
+	private static Set<String> caricaFileParole(String path) {
+
+		Set<String> parole = new HashSet<String>();
+		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+
+			parole = br.lines().filter(l -> l.length() >= 3).map(l -> {
+				Normalizer.normalize(l, Normalizer.Form.NFD);
+				l.replaceAll("\\p{M}", "");
+				return l;
+			}).map(l -> l.toLowerCase()).collect(Collectors.toSet());
+
+		} catch (IOException e) {
+			System.out.println("Errore: file parole non caricato");
+		}
+
+		return parole;
 	}
 
 	public String generaParola() {
-		return "ciao";
+		return parole.stream().skip((int) (parole.size() * Math.random())).findFirst().get();
 	}
 
 	public int getPartiteGiocate() {
@@ -63,7 +89,7 @@ public class GiocoImpiccato extends Observable {
 	 */
 	public boolean iniziaPartita() {
 		boolean b = partitaCorrente.isEmpty();
-		partitaCorrente = Optional.of(new PartitaImpiccato(this, "boh"));
+		partitaCorrente = Optional.of(new PartitaImpiccato(this, generaParola()));
 		return b;
 	}
 

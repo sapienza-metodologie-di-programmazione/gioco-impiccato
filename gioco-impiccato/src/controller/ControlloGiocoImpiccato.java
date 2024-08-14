@@ -1,8 +1,11 @@
 package controller;
 
+import java.util.Optional;
+
 import model.GiocoImpiccato;
 import view.FinestraGiocoImpiccato;
 import view.Pannello;
+import view.PannelloGioco;
 
 public class ControlloGiocoImpiccato {
 
@@ -12,6 +15,7 @@ public class ControlloGiocoImpiccato {
 	public ControlloGiocoImpiccato(GiocoImpiccato modello, FinestraGiocoImpiccato vista) {
 		this.modello = modello;
 		this.vista = vista;
+		modello.addObserver(vista.getPannelloStatistiche());
 		inizializzaAzioniBottoni();
 	}
 
@@ -22,7 +26,12 @@ public class ControlloGiocoImpiccato {
 
 	private void inizializzaBottoniMenu() {
 		vista.getPannelloMenu().getBottoneGioco().addActionListener(e -> {
-			vista.setPannelloGioco(modello.generaParola());
+			Optional<PannelloGioco> vecchio = vista.getPannelloGioco();
+			if (vecchio.isPresent())
+				modello.deleteObserver(vecchio.get());
+			modello.iniziaPartita();
+			vista.setPannelloGioco(modello.getPartitaCorrente().get().getParola());
+			modello.addObserver(vista.getPannelloGioco().get());
 			inizializzaBottoniGioco();
 			cambiaSchermata(Pannello.TipoPannello.GIOCO);
 		});
@@ -37,7 +46,8 @@ public class ControlloGiocoImpiccato {
 	}
 
 	private void inizializzaBottoniGioco() {
-		vista.getPannelloGioco().getBottoneMenu().addActionListener(e -> cambiaSchermata(Pannello.TipoPannello.MENU));
+		vista.getPannelloGioco().get().getBottoneMenu()
+				.addActionListener(e -> cambiaSchermata(Pannello.TipoPannello.MENU));
 
 	}
 

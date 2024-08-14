@@ -119,6 +119,10 @@ public class GraficaPannello {
 		return new JLabel(new ImageIcon(path));
 	}
 
+	public void sostituisciImmagine(JLabel label, String path) {
+		label.setIcon(new ImageIcon(path));
+	}
+
 	public static GridBagConstraints generaDisposizione(int x, int y, int w, int h, int a) {
 		return generaDisposizione(x, y, w, h, a, 1, 1);
 	}
