@@ -9,6 +9,11 @@ import view.Pannello;
 import view.PannelloEsito;
 import view.PannelloGioco;
 
+/**
+ * Classe incaricata della gestione delle interazioni tra modello e vista del
+ * Gioco dell'Impiccato; è responsabile delle azioni eseguite al clic dei
+ * bottoni
+ */
 public class ControlloGiocoImpiccato {
 
 	private GiocoImpiccato modello;
