@@ -79,7 +79,7 @@ public class PannelloStatistiche extends Pannello {
 	}
 
 	/**
-	 * p Metodo che produce una stringa che descrive le statistiche di gioco
+	 * Metodo che produce una stringa che descrive le statistiche di gioco
 	 * 
 	 * @param partite giocate
 	 * @param partite vinte
