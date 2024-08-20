@@ -98,21 +98,27 @@ public class GraficaPannello {
 	}
 
 	public JButton creaBottone(String testo) {
-		JButton b = new JButton(testo);
-		if (colori.containsKey(TipoSfondo.BOTTONE))
-			return creaBottone(testo, colori.get(TipoSfondo.BOTTONE));
-		return creaBottone(testo, TRASPARENTE);
+		return creaBottone(testo, Optional.ofNullable(colori.get(TipoTesto.BOTTONE)),
+				Optional.ofNullable(colori.get(TipoSfondo.BOTTONE)), Optional.ofNullable(fonts.get(TipoTesto.BOTTONE)));
 	}
 
 	public JButton creaBottone(String testo, Color coloreSfondo) {
+
+		return creaBottone(testo, Optional.ofNullable(colori.get(TipoTesto.BOTTONE)), Optional.of(coloreSfondo),
+				Optional.ofNullable(fonts.get(TipoTesto.BOTTONE)));
+	}
+
+	private JButton creaBottone(String testo, Optional<Color> coloreTesto, Optional<Color> coloreSfondo,
+			Optional<Font> font) {
 		JButton b = new JButton(testo);
-		if (colori.containsKey(TipoTesto.BOTTONE))
-			b.setForeground(colori.get(TipoTesto.BOTTONE));
-		if (fonts.containsKey(TipoTesto.BOTTONE))
-			b.setFont(fonts.get(TipoTesto.BOTTONE));
-
-		b.setBackground(coloreSfondo);
-
+		if (!coloreTesto.isEmpty())
+			b.setForeground(coloreTesto.get());
+		if (!coloreSfondo.isEmpty())
+			b.setBackground(coloreSfondo.get());
+		else
+			b.setBackground(TRASPARENTE);
+		if (!font.isEmpty())
+			b.setFont(font.get());
 		return b;
 	}
 
