@@ -33,10 +33,6 @@ public class ControlloGiocoImpiccato {
 		 * lettere, tuttavia il pannello viene creato successivamente, al clic del
 		 * bottone "Gioca" dal menù o "Nuova parola" da una partita terminata
 		 */
-		inizializzaAzioniBottoni();
-	}
-
-	private void inizializzaAzioniBottoni() {
 		inizializzaBottoniMenu();
 		inizializzaBottoniStatistiche();
 	}
