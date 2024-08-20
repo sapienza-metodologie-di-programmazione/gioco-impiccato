@@ -23,12 +23,13 @@ abstract public class Pannello extends JPanel implements Observer {
 	}
 
 	static {
+		// impostazione colori di default sui bottoni
 		UIManager.put("Button.highlight", GraficaPannello.ARANCIONE);
 		UIManager.put("Button.select", GraficaPannello.ARANCIONE);
 		UIManager.put("Button.focus", GraficaPannello.TRASPARENTE);
 	}
 
-	private GraficaPannello grafica = new GraficaPannello();
+	private GraficaPannello grafica = new GraficaPannello(); // oggetto responsabile dell'aspetto estetico del pannello
 	private static Color coloreSfondoDefault = Color.WHITE;
 
 	public static final GraficaPannello GRAFICA_DEFAULT = new GraficaPannello(
@@ -54,6 +55,7 @@ abstract public class Pannello extends JPanel implements Observer {
 		return grafica;
 	}
 
+	// metodo che disegna uno sfondo a righe oblique per il pannello
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -64,8 +66,4 @@ abstract public class Pannello extends JPanel implements Observer {
 		}
 	}
 
-//	@Override
-//	public void update(Observable modello, Object arg) {
-//		// comportamento specificato nelle sotto-classi
-//	}
 }

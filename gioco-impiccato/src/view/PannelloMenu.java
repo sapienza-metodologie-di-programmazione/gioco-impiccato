@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -40,10 +39,6 @@ public class PannelloMenu extends Pannello {
 		bottoneGioco = grafica.creaBottone(indicazioneGioco);
 		bottoneStatistiche = grafica.creaBottone(indicazioneStatistiche);
 
-		inizializzaPannelloMenu();
-	}
-
-	private void inizializzaPannelloMenu() {
 		setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 		add(immagine);
 		add(creaPannelloPulsanti());
@@ -57,7 +52,6 @@ public class PannelloMenu extends Pannello {
 		p.add(bottoneGioco, disp);
 		disp = GraficaPannello.generaDisposizione(0, 5, 1, 1, GridBagConstraints.NORTH);
 		p.add(bottoneStatistiche, disp);
-		p.setBackground(new Color(0, 0, 0, 0));
 		return p;
 	}
 
@@ -79,7 +73,7 @@ public class PannelloMenu extends Pannello {
 
 	@Override
 	public void update(Observable modello, Object arg) {
-
+		// il menù non ha dati da aggiornare
 	}
 
 }

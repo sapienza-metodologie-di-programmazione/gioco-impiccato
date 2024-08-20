@@ -78,6 +78,14 @@ public class PannelloStatistiche extends Pannello {
 		return bottoneMenu;
 	}
 
+	/**
+	 * Metodo che produce una stringa che descrive le statistiche di gioco
+	 * 
+	 * @param partite giocate
+	 * @param partite vinte
+	 * @param ultima  parola indovinata
+	 * @return descrizione delle statistiche
+	 */
 	public static String generaStatistiche(int partiteGiocate, int partiteVinte, String ultimaParolaIndovinata) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<html>" + indicazionePartiteGiocate + partiteGiocate + "<br>");
@@ -89,6 +97,10 @@ public class PannelloStatistiche extends Pannello {
 	@Override
 	public void update(Observable modello, Object arg) {
 		GiocoImpiccato g = (GiocoImpiccato) modello;
+		/*
+		 * i dati sulle partite precedenti vengono aggiornati prendendo la versione più
+		 * recente dal modello
+		 */
 		statistiche.setText(generaStatistiche(g.getPartiteGiocate(), g.getPartiteVinte(),
 				g.getUltimaParolaIndovinata().orElse("")));
 	}

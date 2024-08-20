@@ -26,8 +26,7 @@ public class PannelloEsito extends Pannello {
 
 	public enum TipoEsito {
 
-		VITTORIA("assets/victory.png", GraficaPannello.VERDE),
-		SCONFITTA("assets/game-over.png", GraficaPannello.ROSSO);
+		VITTORIA("assets/victory.png", GraficaPannello.VERDE), SCONFITTA("assets/game-over.png", GraficaPannello.ROSSO);
 
 		private String pathImmagine; // icona vittoria o sconfitta
 		private Color colore; // colore tematico vittoria o sconfitta
@@ -108,6 +107,10 @@ public class PannelloEsito extends Pannello {
 	public void update(Observable modello, Object arg) {
 		GiocoImpiccato g = (GiocoImpiccato) modello;
 		PartitaImpiccato p = g.getPartitaCorrente().get();
+		/*
+		 * si aggiorna il contenuto del commento dell'esito con le statistiche più
+		 * recenti ottenute dal modello
+		 */
 		testo.setText(esito.getCommento(p.getParola(), g.getPartiteGiocate(), g.getPartiteVinte()));
 	}
 

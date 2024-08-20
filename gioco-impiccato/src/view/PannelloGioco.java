@@ -30,10 +30,10 @@ public class PannelloGioco extends Pannello {
 	private JButton bottoneMenu;
 	private JLabel vistaParola;
 	private Map<Character, JButton> bottoniLettere;
-	private JPanel pannelloSuperiore;
-	private JPanel pannelloBottoni;
-	private PannelloEsito pannelloVittoria;
-	private PannelloEsito pannelloSconfitta;
+	private JPanel pannelloSuperiore; // pannello con vite e bottone per ritorno al menù
+	private JPanel pannelloBottoni; // pannello con i bottoni delle lettere
+	private PannelloEsito pannelloVittoria; // pannello da visualizzare in caso di vittoria
+	private PannelloEsito pannelloSconfitta; // pannello da visualizzare in caso di sconfitta
 
 	private static Character carattereNascosto = '_';
 	private static String alfabeto = "abcdefghijklmnopqrstuvwxyz";
@@ -75,10 +75,34 @@ public class PannelloGioco extends Pannello {
 
 	}
 
+	public JButton getBottoneMenu() {
+		return bottoneMenu;
+	}
+
+	public Map<Character, JButton> getBottoniLettere() {
+		return bottoniLettere;
+	}
+
+	public PannelloEsito getPannelloVittoria() {
+		return pannelloVittoria;
+	}
+
+	public PannelloEsito getPannelloSconfitta() {
+		return pannelloSconfitta;
+	}
+
+	/*
+	 * metodo per creare una vista della parola da indovinare dove tutte le lettere
+	 * da nascondere sono sostituite dal carattere scelto (ad esempio '_')
+	 */
 	private JLabel creaVistaParola(String parola) {
 		return getGrafica().creaTitolo((carattereNascosto + " ").repeat(parola.length()).strip());
 	}
 
+	/*
+	 * metodo per aggiornare la vista della parola scoprendo tutte le lettere
+	 * utilizzate
+	 */
 	private void aggiornaVistaParola(String parola, Set<Character> lettereVisibili) {
 		String vistaParola = parola.chars().mapToObj(i -> ((char) i)).map(c -> {
 			if (!lettereVisibili.contains(c))
@@ -121,36 +145,15 @@ public class PannelloGioco extends Pannello {
 		return p;
 	}
 
-	public JButton getBottoneMenu() {
-		return bottoneMenu;
-	}
-
-	public Map<Character, JButton> getBottoniLettere() {
-		return bottoniLettere;
-	}
-
-	public PannelloEsito getPannelloVittoria() {
-		return pannelloVittoria;
-	}
-
-	public PannelloEsito getPannelloSconfitta() {
-		return pannelloSconfitta;
-	}
-
 	private void aggiornaVite(int numeroVite) {
 		getGrafica().sostituisciImmagine(immagineVite, pathImmaginiVite.get(numeroVite));
 		repaint();
 	}
 
-	public void mostraEsito(PannelloEsito.TipoEsito esito) {
-		remove(pannelloBottoni);
-		switch (esito) {
-		case VITTORIA -> add(pannelloVittoria);
-		case SCONFITTA -> add(pannelloSconfitta);
-		}
-
-	}
-
+	/*
+	 * metodo per aggiornare il colore di un bottone lettera premuto e renderlo non
+	 * più cliccabile
+	 */
 	private void aggiornaBottoneLettera(String parola, Character c, JButton b) {
 		if (parola.indexOf(c) != -1) {
 			b.setBackground(GraficaPannello.VERDE_CHIARO);
@@ -158,6 +161,19 @@ public class PannelloGioco extends Pannello {
 			b.setBackground(GraficaPannello.ROSSO_CHIARO);
 		}
 		b.setEnabled(false);
+	}
+
+	/*
+	 * metodo per mostrare l'esito di una partita terminata tramite il pannello
+	 * corrispondente (vittoria o sconfitta)
+	 */
+	private void mostraEsito(PannelloEsito.TipoEsito esito) {
+		remove(pannelloBottoni);
+		switch (esito) {
+		case VITTORIA -> add(pannelloVittoria);
+		case SCONFITTA -> add(pannelloSconfitta);
+		}
+
 	}
 
 	@Override
@@ -176,8 +192,7 @@ public class PannelloGioco extends Pannello {
 			return;
 		}
 
-		int vite = PartitaImpiccato.MAX_ERRORI - p.getErrori();
-		aggiornaVite(vite);
+		aggiornaVite(PartitaImpiccato.MAX_ERRORI - p.getErrori());
 
 		bottoniLettere.forEach((c, b) -> {
 			if (lettereUsate.contains(c))

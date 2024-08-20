@@ -17,11 +17,12 @@ import javax.swing.UIManager;
 public class FinestraGiocoImpiccato extends JFrame {
 
 	static {
+		// di default lo sfondo di un pannello è trasparente
 		UIManager.put("Panel.background", GraficaPannello.TRASPARENTE);
 	}
 
 	private static String titolo = "Gioco dell'impiccato"; // nome della finestra
-	private static String pathIcona = "assets/hangman-game-icon.png"; // icona della finestra
+	private static String pathIcona = "assets/hangman-game-icon.png"; // path dell'icona della finestra
 
 	private JPanel pannelloGenerale;
 	private PannelloMenu pannelloMenu;
@@ -35,10 +36,15 @@ public class FinestraGiocoImpiccato extends JFrame {
 		pannelloMenu = new PannelloMenu();
 		pannelloStatistiche = new PannelloStatistiche();
 		pannelloGioco = Optional.ofNullable(null);
+		/*
+		 * il Card Layout del pannello generale dà la possibilità di scegliere quale
+		 * pannello visualizzare tra quelli al suo interno
+		 */
 		pannelloGenerale = new JPanel(new CardLayout()) {
 			{
 				add(pannelloMenu, Pannello.TipoPannello.MENU.name());
 				add(pannelloStatistiche, Pannello.TipoPannello.STATISTICHE.name());
+				// il pannello gioco viene aggiunto alla creazione di una partita
 			}
 		};
 
@@ -46,11 +52,16 @@ public class FinestraGiocoImpiccato extends JFrame {
 		try {
 			setIconImage(ImageIO.read(new File(pathIcona)));
 		} catch (IOException e) {
+			// viene usata l'icona di default della finestra
 		}
 
 		add(pannelloGenerale);
-		pack(); // setta le dimensioni della finestra al minimo necessario per mostrare gli
-				// elementi da essa contenuti
+
+		/*
+		 * le dimensioni della finestra sono settate al minimo necessario per mostrare
+		 * interamente gli elementi da essa contenuti
+		 */
+		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
@@ -71,6 +82,13 @@ public class FinestraGiocoImpiccato extends JFrame {
 		return pannelloGioco;
 	}
 
+	/**
+	 * Metodo per inizializzare un nuovo pannello gioco (un eventuale pannello
+	 * pre-esistente viene sovrascritto) e aggiungerlo al pannello generale della
+	 * finestra
+	 * 
+	 * @param parola da indovinare nel nuovo pannello gioco
+	 */
 	public void setPannelloGioco(String parola) {
 		if (pannelloGioco.isPresent())
 			pannelloGenerale.remove(pannelloGioco.get());
@@ -78,6 +96,12 @@ public class FinestraGiocoImpiccato extends JFrame {
 		pannelloGenerale.add(pannelloGioco.get(), Pannello.TipoPannello.GIOCO.name());
 	}
 
+	/**
+	 * Metodo per visualizzare un determinato pannello contenuto nel pannello
+	 * generale (menù, statistiche o gioco)
+	 * 
+	 * @param tipo del pannello dal visualizzare
+	 */
 	public void visualizzaPannello(Pannello.TipoPannello tipoPannello) {
 		((CardLayout) pannelloGenerale.getLayout()).show(pannelloGenerale, tipoPannello.name());
 	}
