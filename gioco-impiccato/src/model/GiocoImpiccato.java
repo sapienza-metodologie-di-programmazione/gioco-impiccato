@@ -10,20 +10,34 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Classe che rappresenta il modello del Gioco dell'Impiccato; gestisce le
+ * statistiche delle partite giocate e contiene un riferimento all'eventuale
+ * partita in corso
+ */
 public class GiocoImpiccato extends Observable {
 
-	private Set<String> parole;
+	private Set<String> parole; // insieme da cui estrarre le parole da indovinare
 	private int partiteGiocate;
 	private int partiteVinte;
 	private Optional<String> ultimaParolaIndovinata;
 	private Optional<PartitaImpiccato> partitaCorrente;
 
+	/*
+	 * file con parole di default (1000 parole italiane) reperito da
+	 * https://github.com/napolux/paroleitaliane
+	 */
 	private static String pathFileParole = "1000_parole_italiane_comuni.txt";
 
 	public GiocoImpiccato() {
 		this(pathFileParole);
 	}
 
+	/**
+	 * Costruttore del modello del Gioco dell'Impiccato
+	 * 
+	 * @param il path del file di testo con le parole da indovinare
+	 */
 	public GiocoImpiccato(String path) {
 		parole = caricaFileParole(path);
 		ultimaParolaIndovinata = Optional.ofNullable(null);
@@ -33,8 +47,16 @@ public class GiocoImpiccato extends Observable {
 	private static Set<String> caricaFileParole(String path) {
 
 		Set<String> parole = new HashSet<String>();
+		/*
+		 * costrutto "try with resources", si assicura che il file venga chiuso dopo
+		 * l'utilizzo
+		 */
 		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
 
+			/*
+			 * uso di stream per eliminare le parole lunghe meno di 3 caratteri e gli
+			 * accenti e per convertire tutte le lettere in minuscolo
+			 */
 			parole = br.lines().filter(l -> l.length() >= 3).map(l -> {
 				Normalizer.normalize(l, Normalizer.Form.NFD);
 				l.replaceAll("\\p{M}", "");
@@ -42,14 +64,10 @@ public class GiocoImpiccato extends Observable {
 			}).map(l -> l.toLowerCase()).collect(Collectors.toSet());
 
 		} catch (IOException e) {
-			System.out.println("Errore: file parole non caricato");
+			e.printStackTrace();
 		}
 
 		return parole;
-	}
-
-	public String generaParola() {
-		return parole.stream().skip((int) (parole.size() * Math.random())).findFirst().get();
 	}
 
 	public int getPartiteGiocate() {
@@ -68,48 +86,37 @@ public class GiocoImpiccato extends Observable {
 		return partitaCorrente;
 	}
 
-	public void aumentaPartiteGiocate() {
-		partiteGiocate++;
-	}
-
-	public void aumentaPartiteVinte() {
-		partiteVinte++;
-	}
-
-	private void setUltimaParolaIndovinata(String parola) {
-		ultimaParolaIndovinata = Optional.of(parola);
+	/**
+	 * Metodo per estrarre casualmente una parola da indovinare dall'insieme di
+	 * parole caricato da file
+	 * 
+	 * @return una parola da indovinare
+	 */
+	public String estraiParola() {
+		return parole.stream().skip((int) (parole.size() * Math.random())).findFirst().get();
 	}
 
 	/**
 	 * Metodo per creare una nuova partita del Gioco dell'Impiccato; se un'altra
 	 * partita era già in corso essa viene sovrascritta
-	 * 
-	 * @return true se la nuova partita non sovrascrive alcuna partita
-	 *         pre-esistente, false altrimenti
 	 */
-	public boolean iniziaPartita() {
-		boolean b = partitaCorrente.isEmpty();
-		partitaCorrente = Optional.of(new PartitaImpiccato(this, generaParola()));
-		return b;
+	public void iniziaPartita() {
+		partitaCorrente = Optional.of(new PartitaImpiccato(this, estraiParola()));
 	}
 
 	/**
 	 * Metodo per terminare la partita corrente del Gioco dell'Impiccato
-	 * 
-	 * @return true se è presente una partita da terminare, false altrimentis
 	 */
-	public boolean terminaPartita() {
-		boolean b = partitaCorrente.isPresent();
-		if (b) {
+	public void terminaPartita() {
+		if (partitaCorrente.isPresent()) {
 			partiteGiocate++;
 			if (partitaCorrente.get().getStato().equals(PartitaImpiccato.StatoPartita.VINTA)) {
 				partiteVinte++;
-				setUltimaParolaIndovinata(partitaCorrente.get().getParola());
+				ultimaParolaIndovinata = Optional.of(partitaCorrente.get().getParola());
 			}
-			notifyObservers();
+			notifyObservers(); // vengono aggiornate le statistiche nelle vista
 			partitaCorrente = Optional.empty();
 		}
-		return b;
 	}
 
 	@Override

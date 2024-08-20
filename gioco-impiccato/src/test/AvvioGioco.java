@@ -4,10 +4,14 @@ import controller.ControlloGiocoImpiccato;
 import model.GiocoImpiccato;
 import view.FinestraGiocoImpiccato;
 
+//classe di test del Gioco dell'Impiccato
 public class AvvioGioco {
+
 	public static void main(String[] args) {
+
 		GiocoImpiccato gioco = new GiocoImpiccato();
 		FinestraGiocoImpiccato finestra = new FinestraGiocoImpiccato();
-		ControlloGiocoImpiccato controllo = new ControlloGiocoImpiccato(gioco, finestra);
+		new ControlloGiocoImpiccato(gioco, finestra);
+
 	}
 }
