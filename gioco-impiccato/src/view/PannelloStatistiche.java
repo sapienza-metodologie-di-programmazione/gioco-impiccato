@@ -99,7 +99,7 @@ public class PannelloStatistiche extends Pannello {
 		GiocoImpiccato g = (GiocoImpiccato) modello;
 		/*
 		 * i dati sulle partite precedenti vengono aggiornati prendendo la versione più
-		 * recente dal modello p
+		 * recente dal modello
 		 */
 		statistiche.setText(generaStatistiche(g.getPartiteGiocate(), g.getPartiteVinte(),
 				g.getUltimaParolaIndovinata().orElse("")));
