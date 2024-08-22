@@ -90,8 +90,7 @@ public class FinestraGiocoImpiccato extends JFrame {
 	 * @param parola da indovinare nel nuovo pannello gioco
 	 */
 	public void setPannelloGioco(String parola) {
-		if (pannelloGioco.isPresent())
-			pannelloGenerale.remove(pannelloGioco.get());
+		pannelloGioco.ifPresent(p -> pannelloGenerale.remove(p));
 		pannelloGioco = Optional.of(new PannelloGioco(parola));
 		pannelloGenerale.add(pannelloGioco.get(), Pannello.TipoPannello.GIOCO.name());
 	}

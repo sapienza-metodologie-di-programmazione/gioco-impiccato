@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -31,6 +32,7 @@ public class PannelloGioco extends Pannello {
 	private JLabel vistaParola;
 	private Map<Character, JButton> bottoniLettere;
 	private JPanel pannelloSuperiore; // pannello con vite e bottone per ritorno al menù
+	private JPanel pannelloInferiore; // pannello con bottoni lettere o esito partita
 	private JPanel pannelloBottoni; // pannello con i bottoni delle lettere
 	private PannelloEsito pannelloVittoria; // pannello da visualizzare in caso di vittoria
 	private PannelloEsito pannelloSconfitta; // pannello da visualizzare in caso di sconfitta
@@ -66,10 +68,11 @@ public class PannelloGioco extends Pannello {
 		pannelloBottoni = creaPannelloBottoni();
 		pannelloVittoria = new PannelloEsito(TipoEsito.VITTORIA);
 		pannelloSconfitta = new PannelloEsito(TipoEsito.SCONFITTA);
+		pannelloInferiore = creaPannelloInferiore();
 
 		setBorder(BorderFactory.createEmptyBorder(70, 70, 70, 70));
 		add(pannelloSuperiore);
-		add(pannelloBottoni);
+		add(pannelloInferiore);
 
 		setBackground(Color.white);
 
@@ -132,6 +135,16 @@ public class PannelloGioco extends Pannello {
 		return p;
 	}
 
+	private JPanel creaPannelloInferiore() {
+		return new JPanel(new CardLayout()) {
+			{
+				add(pannelloBottoni); // non sarà necessario tornare al pannello bottoni una volta mostrato l'esito
+				add(pannelloVittoria, TipoEsito.VITTORIA.name());
+				add(pannelloSconfitta, TipoEsito.SCONFITTA.name());
+			}
+		};
+	}
+
 	private JPanel creaPannelloBottoni() {
 		JPanel p = new JPanel(new GridLayout(4, 7, 10, 10));
 		bottoniLettere.values().forEach(b -> {
@@ -168,12 +181,8 @@ public class PannelloGioco extends Pannello {
 	 * corrispondente (vittoria o sconfitta)
 	 */
 	private void mostraEsito(PannelloEsito.TipoEsito esito) {
-		remove(pannelloBottoni);
-		switch (esito) {
-		case VITTORIA -> add(pannelloVittoria);
-		case SCONFITTA -> add(pannelloSconfitta);
-		}
 
+		((CardLayout) pannelloInferiore.getLayout()).show(pannelloInferiore, esito.name());
 	}
 
 	@Override
