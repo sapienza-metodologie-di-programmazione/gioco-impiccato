@@ -40,8 +40,8 @@ public class GiocoImpiccato extends Observable {
 	 */
 	public GiocoImpiccato(String path) {
 		parole = caricaFileParole(path);
-		ultimaParolaIndovinata = Optional.ofNullable(null);
-		partitaCorrente = Optional.ofNullable(null);
+		ultimaParolaIndovinata = Optional.empty();
+		partitaCorrente = Optional.empty();
 	}
 
 	private static Set<String> caricaFileParole(String path) {
@@ -108,15 +108,20 @@ public class GiocoImpiccato extends Observable {
 	 * Metodo per terminare la partita corrente del Gioco dell'Impiccato
 	 */
 	public void terminaPartita() {
-		if (partitaCorrente.isPresent()) {
+
+		/*
+		 * l'azione passata a ifPresent viene eseguita solo se l'Optional
+		 * partitaCorrente non è vuoto
+		 */
+		partitaCorrente.ifPresent(p -> {
 			partiteGiocate++;
-			if (partitaCorrente.get().getStato().equals(PartitaImpiccato.StatoPartita.VINTA)) {
+			if (p.getStato().equals(PartitaImpiccato.StatoPartita.VINTA)) {
 				partiteVinte++;
-				ultimaParolaIndovinata = Optional.of(partitaCorrente.get().getParola());
+				ultimaParolaIndovinata = Optional.of(p.getParola());
 			}
 			notifyObservers(); // vengono aggiornate le statistiche nelle vista
 			partitaCorrente = Optional.empty();
-		}
+		});
 	}
 
 	@Override
